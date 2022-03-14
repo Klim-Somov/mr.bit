@@ -1,0 +1,30 @@
+// Заголовки, общие БЄМ блоки и проче...
+.title {
+        font-weight: bold;
+		@include adaptiveValue("font-size", 48, 32, 1440, 768, 1);
+		@include adaptiveValue("line-height", 57, 38, 1440, 768, 1);
+        color: $mainColor;
+        text-align: center;
+}
+.text {
+    position: relative;
+    font-size: rem(22);
+		line-height: em(29, 22);
+		text-align: center;
+		color: $mainColor;
+        @include adaptiveValue("font-size", 24, 12, 1440, 375, 1);
+		@include adaptiveValue("line-height", 29, 15, 1440, 375, 1);
+         padding-bottom: 65px;
+                margin-bottom: 50px;
+            
+            &::after {
+                content: '';
+                position: absolute;
+                background-image: url(../iconfonts2/dubblearrow.svg);
+                width: 22px;
+                height: 25px;
+                bottom: 0;
+                left: 50%;
+              
+        }
+}

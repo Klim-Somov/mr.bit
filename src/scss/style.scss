@@ -1,0 +1,597 @@
+@use "sass:math";
+
+// Подключение миксинов ===========================================================================================================================================================================================================================================================================
+@import "base/mixins";
+
+// Подключение шрифтов ===========================================================================================================================================================================================================================================================================
+//&display=swap - добавить при подключении через плагин
+@import url(https://fonts.googleapis.com/css?family=Montserrat:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic&display=swap);
+// Подключить если есть локальные файлы шрифтов
+@import "fonts/fonts";
+
+// Подключение иконочных шрифтов ==============================================================================================================================================================================================================================================================================
+// Подключить если есть файл иконочного шрифта
+@import "fonts/icons";
+
+// Шрифт по умолчанию ==============================================================================================================================================================================================================================================================================
+$fontFamily: "Montserrat";
+$fontSize: rem(14); // где 14(px) - размер шрифта по умолчанию из макета
+
+// Основные цвета
+$mainColor: #3E3E3E; // Цвет шрифта по умолчанию
+$mainBlue:#3C93F0;
+
+// НАСТРОЙКИ ===============================================================================================================================================================================================================================================================================================
+// Минимальная ширина страницы
+$minWidth: 320;
+// Ширина полотна (макета)
+$maxWidth: 1440;
+// Ширина ограничивающего контейнера (0 = нет ограничения)
+$maxWidthContainer: 1270;
+// Общий отступ у контейнера
+// (30 = по 15px слева и справа, 0 = нет отступа)
+$containerPadding: 30;
+
+// Ширина срабатывания первого брейкпоинта
+$containerWidth: $maxWidthContainer+$containerPadding;
+
+// Брейк-поинты
+$pc: em($containerWidth); // ПК, ноутбуки, некоторые планшеты в горизонтальном положени
+$tablet: em(991.98); // Планшеты, некоторые телефоны в горизонтальном положении
+$mobile: em(767.98); // Телефоны L
+$mobileSmall: em(479.98); // Телефоны S
+
+// Тип адаптива:
+// 1 = отзывчивость (у контейнера нет брейкпоинтов),
+// 2 = по брейк-поинтам (контейнер меняет свою ширину по брейк-поинтам)
+$responsiveType: 1;
+
+// Обнуление и общие параметры ============================================================================================================================================================================================== =============================================================================================== ===============================================================================================
+@import "base/null";
+
+body {
+
+	// Скролл заблокирован
+	.lock & {
+		overflow: hidden;
+		touch-action: none;
+	}
+
+	// Сайт загружен
+	.loaded & {}
+}
+
+// Оболочка ============================================================================================================================================================================================================================================================================================================================================================================================================================================
+.wrapper {
+
+	display: flex;
+	flex-direction: column;
+
+
+	// Прижимаем footer
+	>main {
+		flex: 1 1 auto;
+	}
+
+	// Фикс для слайдеров
+	>* {
+		min-width: 0;
+	}
+}
+
+// Ограничивающий контейнер ======================================================================================================================================================================================================================
+
+/*
+(i) Стили будут применяться ко 
+всем классам содержащим *__container
+Например header__container, main__container и т.д.
+Снипет (HTML): cnt
+*/
+@if ($responsiveType==1) {
+
+	// Отзывчивая
+	[class*="__container"] {
+		@if ($maxWidthContainer>0) {
+			max-width: rem($maxWidthContainer);
+			box-sizing: content-box;
+			margin: 0 auto;
+		}
+
+		@if ($containerPadding>0) {
+			padding: 0 rem(math.div($containerPadding, 2));
+		}
+	}
+}
+
+@else {
+
+	// По брейк-поинтам
+	[class*="__container"] {
+		margin: 0 auto;
+
+		@if ($maxWidthContainer>0) {
+			max-width: rem($maxWidthContainer);
+			box-sizing: content-box;
+		}
+
+		@else {
+			@if ($containerPadding>0) {
+				padding: 0 rem(math.div($containerPadding, 2));
+			}
+		}
+
+		@media (max-width: $pc) {
+			max-width: rem(970);
+		}
+
+		@media (max-width: $tablet) {
+			max-width: rem(750);
+		}
+
+		@media (max-width: $mobile) {
+			max-width: none;
+
+			@if ($containerPadding>0 and $maxWidthContainer>0) {
+				padding: 0 rem(math.div($containerPadding, 2));
+			}
+		}
+	}
+}
+
+// Подключение базовых стилей, шаблонов (заготовок) и вспомогательных  классов
+// Для подключения/отключения конкретных стилей смотри base.scss
+@import "base";
+
+// Подключение стилей общих элементов проекта
+@import "common";
+
+// Подключение стилей отдельных блоков
+@import "header";
+@import "footer";
+
+// Подключение стилей отдельных страниц
+@import "home";
+//========================================================================================================================================================
+
+
+.fast-ease {
+	background-color: #FED036;
+
+	// .fast-ease__container
+	&__container {
+		@include adaptiveValue("padding-bottom", 149, 120, 1440, 768, 1);
+		@include adaptiveValue("padding-top", 149, 120, 1440, 768, 1);
+
+		background-image: url(../img/master.png);
+		background-repeat: no-repeat;
+		background-position: right;
+		background-size: contain;
+
+
+	}
+
+	// .fast-ease__subtitle
+	&__subtitle {
+		font-weight: 900;
+		font-size: rem(24);
+		line-height: em(29, 24);
+		margin: 0px 0px 20px 0px;
+		color: $mainColor;
+
+	}
+
+	// .fast-ease__title
+	&__title {
+		font-weight: bold;
+		@include adaptiveValue("font-size", 42, 32, 1440, 768, 1);
+
+		line-height: em(50, 42);
+		max-width: 670px;
+		margin: 0px 0px 20px 0px;
+		color: #FFFFFF;
+	}
+
+	&__body {
+		@media (max-width:$tablet) {
+			max-width: 370px;
+
+		}
+	}
+
+	// .fast-ease__text
+	&__text {
+		font-size: rem(18);
+		line-height: em(22, 18);
+		color: $mainColor;
+		display: flex;
+		align-items: center;
+
+		&::before {
+			margin-right: 10px;
+		}
+	}
+
+	// .fast-ease__form
+	&__form {
+		display: flex;
+		margin-top: 30px;
+
+	}
+
+	// .fast-ease__form-select
+	&__form-select {
+		padding: 18px 44px 16px 72px;
+		background-image: url(../img/threcolor.png), url(../iconfonts2/spoller-arrow.svg);
+		background-repeat: no-repeat;
+		display: flex;
+		align-items: center;
+		background-position: 7px, 45px, left, top;
+		font-size: 18px;
+		line-height: 22px;
+		font-weight: bold;
+
+		@media (max-width: em(864)) {
+			padding: 12px 36px 12px 55px;
+		}
+
+	}
+
+	// .fast-ease__form-btn
+	&__form-btn {
+		font-weight: 500;
+		font-size: rem(24);
+		line-height: em(29, 24);
+		color: #FFFFFF;
+		padding: 10px 17px;
+		background-color: $mainBlue;
+
+		@media (max-width: em(864)) {
+			font-size: 14px;
+			line-height: 17px;
+
+		}
+	}
+}
+
+//========================================================================================================================================================
+
+.page {
+
+	// .page__our-help
+	&__our-help {
+		margin-top: rem(70);
+	}
+}
+
+.our-help {
+
+	// .our-help__container
+	&__container {}
+
+	// .our-help__title
+	&__title {
+
+		margin-bottom: 20px;
+
+	}
+
+	// .our-help__text
+	&__text {}
+
+	// .our-help__items
+	&__items {
+		display: flex;
+		justify-content: space-between;
+		gap: 20px;
+
+	}
+
+	// .our-help__item
+	&__item {}
+}
+
+.item-our-help {
+	background-color: #EDF3F6;
+	border-radius: 3px;
+	flex: 0 1 33.333%;
+
+	// .item-our-help__title
+	&__title {
+		font-weight: bold;
+		margin-top: 22px;
+		@include adaptiveValue("font-size", 22, 12, 1440, 768, 1);
+		@include adaptiveValue("line-height", 29, 15, 1440, 768, 1);
+
+		text-align: center;
+		color: $mainColor;
+	}
+
+	&__body {
+		display: flex;
+		justify-content: space-around;
+		margin-top: 40px;
+		padding-left: 6px;
+	}
+
+	// .item-our-help__text
+	&__text {}
+
+	// .item-our-help__list
+	&__list {
+
+		@include adaptiveValue("margin-bottom", 40, 20);
+
+		li {
+			@media (max-width:$tablet) {}
+
+			padding-left: 15px;
+			position: relative;
+			@include adaptiveValue("font-size", 14, 10, 1440, 768, 1);
+			@include adaptiveValue("line-height", 17, 10, 1440, 768, 1);
+
+			&::before {
+				content: '';
+				position: absolute;
+				left: 0;
+				@include adaptiveValue("height", 7, 4, 1440, 768, 1);
+				@include adaptiveValue("width", 7, 4, 1440, 768, 1);
+
+				top: 3px;
+				background-color: #3C93F0;
+			}
+
+			&:not(:last-child) {
+				margin-bottom: 7px;
+
+			}
+		}
+	}
+
+	// .item-our-help__link
+	&__link {
+		background-image: url(../img/our-help/link-arrow.svg);
+		background-repeat: no-repeat;
+		background-position: right;
+		padding-right: 19px;
+		color: $mainBlue;
+		font-weight: 900;
+		text-transform: uppercase;
+		@include adaptiveValue("font-size", 14, 10, 1440, 768, 1);
+		@include adaptiveValue("line-height", 17, 10, 1440, 768, 1);
+		@include adaptiveValue("margin-bottom", 20, 10);
+
+	}
+
+	// .item-our-help__img
+	&__img {
+		object-fit: contain;
+
+		@media (max-width: em(950)) {
+			max-width: 139px;
+
+		}
+	}
+}
+
+//========================================================================================================================================================
+
+
+.masters {
+
+	// .masters__container
+	&__container {
+		@include adaptiveValue("margin-top", 70, 40);
+	}
+
+	// .masters__title
+	&__title {
+		@include adaptiveValue("margin-bottom", 16, 10);
+
+	}
+
+	// .masters__text
+	&__text {}
+
+	// .masters__selection
+	&__selection {
+		display: flex;
+
+		align-items: center;
+		gap: 20px;
+	}
+
+	// .masters__form
+	&__form {}
+
+	// .masters__docs
+	&__docs {
+		background-image: url(../img/our-help/image-docs.png);
+		background-repeat: no-repeat;
+		background-position: right;
+		padding: 54px 166px 45px 0;
+
+		@media (max-width:$tablet) {
+			padding-right: 159px;
+		}
+
+
+
+	}
+
+	// .masters__docs-list
+	&__docs-list {
+		li {
+			padding-left: 38px;
+			position: relative;
+
+			&:not(:last-child) {
+				margin-bottom: 24px;
+			}
+
+			&::before {
+				left: 0;
+				top: -5px;
+				content: '';
+				position: absolute;
+				@include adaptiveValue("height", 30, 30);
+				@include adaptiveValue("width", 30, 30);
+
+				background: url(../img/our-help/green-round-done.svg);
+				background-repeat: no-repeat;
+			}
+		}
+
+		font-weight: bold;
+		@include adaptiveValue("font-size", 14, 8, 1440, 800, 1);
+		@include adaptiveValue("line-height", 17, 10, 1440, 800, 1);
+	}
+}
+
+
+.form-masters {
+	@include adaptiveValue("padding-left", 35, 7);
+	padding-top: 27px;
+	padding-bottom: 20px;
+	border: 1px solid #EDF3F6;
+	display: flex;
+	flex-direction: column;
+
+	&__wrapper {
+		@include adaptiveValue("padding-right", 206, 50);
+		position: relative;
+		background-color: #EDF3F6;
+		display: flex;
+	}
+
+	// .form-masters__text
+	&__text {
+		padding-left: 15px;
+		border-left: 5px solid #09D743;
+		@include adaptiveValue("font-size", 13, 10, 1440, 768, 1);
+		@include adaptiveValue("line-height", 15, 11, 1440, 768, 1);
+
+		span {
+			font-weight: 900;
+			@include adaptiveValue("font-size", 18, 10, 1440, 768, 1);
+			@include adaptiveValue("line-height", 21, 14, 1440, 768, 1);
+		}
+	}
+
+	&__image {
+		position: absolute;
+		right: 40px;
+		top: -44px;
+
+		@media (max-width: em(1100)) {
+			width: 130px;
+			height: 106px;
+			top: -18px;
+			right: 15px;
+		}
+
+		@media (max-width: 800px) {
+
+			top: -11px;
+
+		}
+
+	}
+
+	&__submit {
+		display: flex;
+		margin-top: 21px;
+		margin-bottom: 11px;
+		align-items: center;
+		@include adaptiveValue("width", 390, 50, 1440, 768, 1);
+	}
+
+	// .form-masters__input
+	&__input {
+
+		padding: 12px 0 11px 21px;
+		font-size: 14px;
+		line-height: 17px;
+		flex: 1 1 auto;
+	}
+
+	// .form-masters__btn
+	&__btn {
+		padding: 12px 13px 11px 21px;
+		color: #EDF3F6;
+		background-color: $mainBlue;
+		@include adaptiveValue("font-size", 14, 10, 1440, 768, 1);
+		@include adaptiveValue("line-height", 17, 14, 1440, 768, 1);
+		border-radius: 3px;
+
+	}
+
+	// .form-masters__tip
+	&__tip {
+		padding-left: 14px;
+		position: relative;
+		@include adaptiveValue("font-size", 11, 8, 1440, 768, 1);
+		@include adaptiveValue("line-height", 16, 15, 1440, 768, 1);
+		&::before{
+			position: absolute;
+			content:'';
+			left: 0;
+			top: 4px;
+			width: 6px;
+			height: 6px;
+			border-radius: 1px;
+			background-color: $mainBlue;
+		}
+	}
+}
+//========================================================================================================================================================
+.masters {
+	// .masters__slider
+	&__slider {
+	}
+	// .masters__swiper
+	&__swiper {
+	}
+	// .masters__slide
+	&__slide {
+		max-width: 400px;
+	}
+	// .masters__slider-name
+	&__slider-name {
+		margin-bottom: 10px;
+		
+		font-weight: bold;
+		@include adaptiveValue("font-size", 20, 12, 1440, 768, 1);
+		@include adaptiveValue("line-height", 24, 15, 1440, 768, 1);
+	
+	
+	}
+	// .masters__slider-exp
+	&__slider-exp {
+		display: inline-block;
+		margin-bottom: 25px;
+		font-weight: bold;
+		@include adaptiveValue("font-size", 18, 12, 1440, 768, 1);
+		@include adaptiveValue("line-height", 22, 15, 1440, 768, 1);
+	}
+	// .masters__slider-text
+	&__slider-text {
+		max-width: 155px;
+		font-weight: bold;
+		@include adaptiveValue("font-size", 12, 10, 1440, 768, 1);
+		@include adaptiveValue("line-height", 22, 15, 1440, 768, 1);
+		margin-bottom: 25px;
+	}
+	// .masters__slider-footer
+	&__slider-footer {
+		@include adaptiveValue("font-size", 14, 10, 1440, 768, 1);
+		@include adaptiveValue("line-height", 17, 14, 1440, 768, 1);
+		max-width:  304px;
+	}
+}
+.slider-hr {
+			width: 60px;
+			height:  4px;
+			background-color: #09D743;
+			border: none;
+			margin-bottom: 15px;
+		}
